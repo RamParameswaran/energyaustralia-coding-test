@@ -1,7 +1,8 @@
-from django.conf.urls import url
+from django.urls import path
+
 
 from . import views
 
 urlpatterns = [
-    url(r"^$", views.RecordLabelListView.as_view(), name="list_record_labels"),
+    path("", views.RecordLabelListView, name="list_record_labels"),
 ]

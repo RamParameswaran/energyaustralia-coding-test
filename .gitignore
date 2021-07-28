@@ -101,3 +101,5 @@ ENV/
 .DS_Store
 
 *.whl
+
+.vscode/
