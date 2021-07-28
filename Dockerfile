@@ -20,7 +20,6 @@ ADD requirements.txt /opt/code
 
 # Try to use local wheels. Even if not present, it will proceed
 ADD ./vendor /opt/vendor
-ADD ./deps /opt/deps
 # Only install them if there's any
 RUN if ls /opt/vendor/*.whl 1> /dev/null 2>&1; then pip3 install /opt/vendor/*.whl; fi
 

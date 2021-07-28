@@ -10,7 +10,6 @@ RUN apk add py3-pip
 RUN apk add python3-dev build-base linux-headers gcc
 RUN pip3 install cython wheel
 
-ADD ./deps /opt/deps
 RUN mkdir -p /opt/vendor
 ADD requirements.txt /opt/deps
 ADD ./docker/deps/build_deps.sh /opt/
