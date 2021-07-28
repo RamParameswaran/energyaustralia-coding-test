@@ -40,7 +40,9 @@ def restructure_data(festivals_api_data):
             )
             festival_obj.bands.add(bandlabel_obj)
 
-    out = RecordLabelSerializer(RecordLabel.objects.all(), many=True).data
+    out = RecordLabelSerializer(
+        RecordLabel.objects.all().order_by("name"), many=True
+    ).data
 
     # Cleanup DB
     MusicFestival.objects.all().delete()

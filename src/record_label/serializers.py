@@ -12,7 +12,9 @@ class BandSerializer(serializers.ModelSerializer):
         fields = ["name", "festivals"]
 
     def get_festivals(self, obj):
-        return [{"name": item.name} for item in obj.musicfestival_set.all()]
+        return [
+            {"name": item.name} for item in obj.musicfestival_set.all().order_by("name")
+        ]
 
     def get_name(self, obj):
         return obj.band.name
@@ -27,6 +29,6 @@ class RecordLabelSerializer(serializers.ModelSerializer):
         fields = ["label", "bands"]
 
     def get_bands(self, obj):
-        qs = BandLabel.objects.filter(recordLabel=obj)
+        qs = BandLabel.objects.filter(recordLabel=obj).order_by("band__name")
 
         return BandSerializer(qs, many=True).data
