@@ -59,6 +59,8 @@ settings_logger.info("ALLOWED_HOSTS: {}".format(ALLOWED_HOSTS))
 
 # Application definition
 
+DATA_API_BASE_URL = os.environ.get("DATA_API_BASE_URL")
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
