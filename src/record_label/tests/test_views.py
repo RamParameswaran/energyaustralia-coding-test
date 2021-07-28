@@ -1,38 +1,41 @@
-from django.test import TestCase
-from django.core.urlresolvers import reverse
+import requests
 
-Tweet = None
+from django.test import RequestFactory, TestCase
+from unittest.mock import Mock, patch
+
+from record_label.views import RecordLabelListView
 
 
-class TweetTest(TestCase):
+def mock_response(status, data=None):
+    r = requests.Response()
+    r.status_code = status
+
+    def json_func():
+        return data
+
+    r.json = json_func
+    return r
+
+
+@patch(
+    "requests.get",
+)
+class TestRecordLabelListView_ApiRequestHandling(TestCase):
     def setUp(self):
-        self.tweet = Tweet.objects.create(text="Test tweet")
-        Tweet.objects.create(text="Another tweet")
+        self.factory = RequestFactory()
 
-    def test_list_tweets(self):
-        url = reverse("list_tweets")
-        response = self.client.get(url)
-        assert response.status_code == 200
-        result = response.json()
-        assert len(result) == 2
+    def test_API_exception_is_gracefully_passed_forward(self, mock_api_request):
+        mock_api_request.side_effect = Mock(side_effect=requests.exceptions.HTTPError())
 
-        # Walk throught the results
-        for tweet in result:
-            response = self.client.get(tweet["href"])
-            assert response.status_code == 200
+        request = self.factory.get("/")
+        resp = RecordLabelListView(request)
 
-    def test_single_tweet(self):
-        url = reverse("get_tweet", kwargs={"pk": self.tweet.id})
-        response = self.client.get(url)
-        assert response.status_code == 200
+        assert resp.status_code == 400
 
-        # Check structure
-        result = response.json()
-        assert set(result.keys()) == {"text", "href", "timestamp"}
-        assert result["text"] == "Test tweet"
-        assert url in result["href"]
+    def test_API_429_status_is_gracefully_passed_forward(self, mock_api_request):
+        mock_api_request.return_value = mock_response(429)
 
-    def test_bad_tweet(self):
-        url = reverse("get_tweet", kwargs={"pk": 12345})
-        response = self.client.get(url)
-        assert response.status_code == 404
+        request = self.factory.get("/")
+        resp = RecordLabelListView(request)
+
+        assert resp.status_code == 429
