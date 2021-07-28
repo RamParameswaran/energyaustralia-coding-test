@@ -19,7 +19,7 @@ services:
   dev-server:
     env_file: environment.env
     environment:
-      - CONSOLE_LOGS=0
+      - CONSOLE_LOGS=1
     build:
       context: .
       args:

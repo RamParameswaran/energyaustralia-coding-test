@@ -67,7 +67,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "tweet",
+    "record_label",
 ]
 
 MIDDLEWARE = [
