@@ -4,14 +4,11 @@ This is a solution repo for the [Integration Engineer code test](https://eacp.en
 
 ## Table of Contents
 
-1. [Context](#context)
 1. [Installation](#installation)
 1. [Commands](#commands)
 1. [Development](#development)
 1. [Testing](#testing)
 1. [Swagger](#swagger)
-
-## Context
 
 ## Installation
 
@@ -31,11 +28,13 @@ $ make install      # Install the pip dependencies on the docker container
 $ make start        # Run the container containing your local python server
 ```
 
-If everything works, you should see the swagger documentation [here](http://127.0.0.1:3000/apidocs/).
+If everything works, you should see the swagger documentation [here](http://localhost:8000/apidocs/).
 
 The API runs locally on docker containers.
 
 Server logs are logged to `./server.log`.
+
+Note - you can change the data API base_url by setting the "DATA_API_BASE_URL" environment variable in the `environment.env` file.
 
 ## Commands
 
@@ -60,8 +59,8 @@ $ make test
 
 ## Swagger
 
-API Documentation is available [here](http://127.0.0.1:3000/application/spec).
-The Swagger UI is available [here](http://127.0.0.1:3000/apidocs).
+API Documentation is available [here](http://localhost:8000/schema).
+The Swagger UI is available [here](http://localhost:8000/apidocs).
 
 ## Thanks
 
