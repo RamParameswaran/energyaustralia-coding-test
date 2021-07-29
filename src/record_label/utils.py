@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.db.models.functions import Lower
 
 from record_label.models import Band, BandLabel, MusicFestival, RecordLabel
 from record_label.serializers import RecordLabelSerializer
@@ -55,7 +56,7 @@ def restructure_data(festivals_api_data):
                 festival_obj.bands.add(bandlabel_obj)
 
         out = RecordLabelSerializer(
-            RecordLabel.objects.all().order_by("name"), many=True
+            RecordLabel.objects.all().order_by(Lower("name")), many=True
         ).data
 
         # Cleanup DB

@@ -1,34 +1,27 @@
 from rest_framework import serializers
 
-from record_label.models import BandLabel, RecordLabel
+from record_label.models import BandLabel, MusicFestival, RecordLabel
+
+
+class FestivalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MusicFestival
+        fields = ["name"]
 
 
 class BandSerializer(serializers.ModelSerializer):
-    name = serializers.SerializerMethodField()
-    festivals = serializers.SerializerMethodField()
+    name = serializers.CharField(source="band")
+    festivals = FestivalSerializer(many=True, source="musicfestival_set")
 
     class Meta:
         model = BandLabel
         fields = ["name", "festivals"]
 
-    def get_festivals(self, obj):
-        return [
-            {"name": item.name} for item in obj.musicfestival_set.all().order_by("name")
-        ]
-
-    def get_name(self, obj):
-        return obj.band.name
-
 
 class RecordLabelSerializer(serializers.ModelSerializer):
     label = serializers.CharField(source="name")
-    bands = serializers.SerializerMethodField()
+    bands = BandSerializer(many=True, source="bandlabel_set")
 
     class Meta:
         model = RecordLabel
         fields = ["label", "bands"]
-
-    def get_bands(self, obj):
-        qs = BandLabel.objects.filter(recordLabel=obj).order_by("band__name")
-
-        return BandSerializer(qs, many=True).data

@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "record_label",
+    "drf_spectacular",  # Swagger docs
 ]
 
 MIDDLEWARE = [
@@ -101,7 +102,21 @@ TEMPLATES = [
     },
 ]
 
+REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
 WSGI_APPLICATION = "config.wsgi.application"
+
+
+# Swagger documentation
+# https://drf-spectacular.readthedocs.io/en/latest/settings.html
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "EnergyAustralia Coding Test (Ram Parameswaran)",
+    "DESCRIPTION": "as per https://eacp.energyaustralia.com.au/codingtest/integration",
+    "VERSION": "1.0.0",
+}
 
 
 # Database

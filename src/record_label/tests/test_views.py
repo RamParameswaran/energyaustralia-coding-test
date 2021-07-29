@@ -29,7 +29,7 @@ class TestRecordLabelListView_ApiRequestHandling(TestCase):
         mock_api_request.side_effect = Mock(side_effect=requests.exceptions.HTTPError())
 
         request = self.factory.get("/")
-        resp = RecordLabelListView(request)
+        resp = RecordLabelListView.as_view()(request)
 
         assert resp.status_code == 400
 
@@ -37,7 +37,7 @@ class TestRecordLabelListView_ApiRequestHandling(TestCase):
         mock_api_request.return_value = mock_response(429)
 
         request = self.factory.get("/")
-        resp = RecordLabelListView(request)
+        resp = RecordLabelListView.as_view()(request)
 
         assert resp.status_code == 429
 
@@ -76,7 +76,7 @@ class TestRecordLabelListView(TestCase):
         mock_api_request.return_value = mock_response(200, api_data)
 
         request = self.factory.get("/")
-        resp = RecordLabelListView(request)
+        resp = RecordLabelListView.as_view()(request)
 
         assert resp.status_code == 200
         assert resp.data == [
@@ -128,7 +128,7 @@ class TestRecordLabelListView(TestCase):
         mock_api_request.return_value = mock_response(200, api_data)
 
         request = self.factory.get("/")
-        resp = RecordLabelListView(request)
+        resp = RecordLabelListView.as_view()(request)
 
         assert resp.status_code == 200
         assert resp.data == [
